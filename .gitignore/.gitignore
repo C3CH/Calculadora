@@ -1,0 +1,275 @@
+# Importar librerias
+import tkinter
+import sympy
+import math
+import matplotlib
+matplotlib.use('TkAgg')
+import pylab as pl
+import numpy as np
+from sympy import *
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt 
+# Definir el objeto que controla la ventana
+app = Tk()
+
+#Definir título
+app.title("APP")
+
+# Formas de establecer el alto y ancho de la ventana
+# app.wm_state('zoomed')
+# app.attributes("-fullscreen", True)
+# ancho = app.winfo_screenwidth()
+alto = app.winfo_screenheight()
+app.geometry("%sx%s" %(600,alto))
+
+app.update()
+
+# Detalles de la ventana 
+# print("Ancho Screen:", app.winfo_screenwidth())
+# print("Alto Screen:", app.winfo_screenheight())
+# print("Ancho Ventana:", app.winfo_width())
+# print("Alto Ventana:", app.winfo_height())
+# print("x:", app.winfo_x())
+# print("y:", app.winfo_y())
+# print(app.geometry())
+
+def funCerrar():
+	# print("Has cerrado la ventana")
+	if messagebox.askokcancel("Salir", "¿Desea salir de la aplicación?"):
+		print("Has cerrado la ventana")
+		app.destroy()
+
+def funInt():
+    numero1 = num1.get()
+    numero2 = num2.get()
+    numero3 = num3.get()
+    numero4 = num4.get()
+    x = Symbol('x')
+    resultado = integrate(numero3*x**numero1 + numero4*x**numero2, x)
+    Label(pestañaIntegrar, text = "Total: %s" %(resultado)).place(x = 80,y = 200) # Definiendo funciones
+
+def funSuma():
+    numero1 = num1.get()
+    numero2 = num2.get()
+    resultado = numero1 + numero2
+    Label(pestañaSuma, text = "Total: %s" %(resultado)).place(x = 80,y = 200)
+
+def funResta():
+    numero1 = num1.get()
+    numero2 = num2.get()
+    resultado = numero1 - numero2
+    Label(pestañaResta, text = "Total: %s" %(resultado)).place(x = 80,y = 200)
+    
+def funMultiplicacion():
+    numero1 = num1.get()
+    numero2 = num2.get()
+    resultado = numero1 * numero2
+    Label(pestañaMultiplicacion, text = "Total: %s" %(resultado)).place(x = 80, y = 200)
+
+def funDivision():
+    numero1 = num1.get()
+    numero2 = num2.get()
+    
+    if numero1 == 0 or numero2 == 0: # Se declara un if ya que no puede haber un divisor igual a 0
+    	# Label(pestañaDivision, text = "No se puede dividir por cero", fg = "#DC143C").place(x = 80, y = 200)
+        messagebox.showwarning("Error!","No se puede dividir entre 0.")
+    else:
+        resultado = numero1 / numero2
+        Label(pestañaDivision, text = "Total: %s" %(resultado)).place(x = 80,y = 200)
+
+def funRaiz():
+    numero1 = num1.get()
+    numero2 = num2.get()
+    
+    
+    if numero2 <= 0: # No puede haber un número con exponente 1/0
+    	# Label(pestañaRaiz, text = "Solo se puede obtener valores arriba del 0", fg = "#DC143C").place(x = 80, y = 200)
+        messsagebox.showwarning("Error!","No se puede tener 0 en las raíz cuadrada")
+    else:
+        resultado = math.sqrt(numero1, numero2)
+        Label(pestañaRaiz, text = "Total: %s" %(resultado)).place(x = 80, y = 200 )
+  
+def funPotencia():
+    numero1 = num1.get()
+    numero2 = num2.get()
+    resultado = math.pow(numero1,numero2)
+    Label(pestañaPotencia, text = "Total: %s" %(resultado)).place(x = 80, y = 200)
+   
+def funSeno():
+    numero1 = num1.get()
+    resultado = math.sin(numero1)
+    Label(pestañaSeno, text = "Total: %s" %(resultado)).place(x = 80, y = 200)
+
+def funCos():
+    numero1 =  num1.get()
+    resultado = math.cos(numero1)
+    Label(pestañaCoseno, text = "Total: %s" %(resultado)).place(x =80, y = 200)
+
+def funTan():
+    numero1 = num1.get()
+    resultado = math.tan(numero1)
+    Label(pestañaTangente, text = "Total: %s" %(resultado)).place(x = 80, y = 200)
+
+def funLog():
+    numero1= num1.get()
+    resultado = math.log(numero1)
+    Label(pestañaLogaritmo, text = "Total: %s" %(resultado)).place(x = 80, y = 200)
+
+def funGraf():
+    X = np.linspace(-np.pi, np.pi, 256, endpoint=True)
+    C, S = np.cos(X), np.sin(X)
+    pl.plot(X, C)
+    pl.plot(X, S)
+    pl.show()
+    Label(pestañaIntegrar, )
+
+num1 = DoubleVar() # Declarando variables
+num2 = DoubleVar()
+num3 = DoubleVar()
+num4 = DoubleVar()
+
+# Asociando el teclado con las teclas 
+app.protocol("WM_DELETE_WINDOW", funCerrar)
+
+notebook = ttk.Notebook(app)
+notebook.pack(fill = 'both', expand = 'yes')
+
+pestañaIntegrar = ttk.Frame(notebook) # Añadiendo las ventanas de cada operación
+pestañaSuma = ttk.Frame(notebook)
+pestañaResta = ttk.Frame(notebook)
+pestañaMultiplicacion = ttk.Frame(notebook)
+pestañaDivision = ttk.Frame(notebook)
+pestañaRaiz = ttk.Frame(notebook)
+pestañaPotencia = ttk.Frame(notebook)
+pestañaSeno = ttk.Frame(notebook)
+pestañaCoseno = ttk.Frame(notebook)
+pestañaTangente = ttk.Frame(notebook)
+pestañaLogaritmo = ttk.Frame(notebook)
+
+notebook.add(pestañaIntegrar, text = 'Integrar') # Añadiendo el título de cada pestaña
+notebook.add(pestañaSuma, text = 'Suma')
+notebook.add(pestañaResta, text = 'Resta')
+notebook.add(pestañaMultiplicacion, text = 'Multiplicacion')
+notebook.add(pestañaDivision, text = 'Division')
+notebook.add(pestañaRaiz, text = 'Raiz')
+notebook.add(pestañaPotencia, text = 'Potencia')
+notebook.add(pestañaSeno, text = 'Seno')
+notebook.add(pestañaCoseno, text = 'Coseno')
+notebook.add(pestañaTangente, text = 'Tangente')
+notebook.add(pestañaLogaritmo, text = 'Logaritmo')
+
+######################Pestaña 1 (INTEGRAR)######################
+             
+Label(pestañaIntegrar, text = "Introduce exponente 1:").place(x = 20, y = 50)
+Entry(pestañaIntegrar, textvariable = num1).place(x = 200, y = 50)
+
+Label(pestañaIntegrar, text = "Introduce exponente 2:").place(x = 20, y = 80)
+Entry(pestañaIntegrar, textvariable = num2).place(x = 200, y = 80)
+
+Label(pestañaIntegrar, text = "Introduce coeficiente 1:").place(x = 20, y = 110)
+Entry(pestañaIntegrar, textvariable = num3).place(x = 200, y = 110) 
+
+Label(pestañaIntegrar, text = "Introduce coefieciente 2:").place(x = 20, y = 140)
+Entry(pestañaIntegrar, textvariable = num4).place(x = 200, y = 140)
+
+Button(pestañaIntegrar, text = "Obtener un resultado", fg = "#228B22", command = funInt).place(x = 100, y = 180)
+Button(pestañaIntegrar, text = "Graficar", fg = "#228B22", command = funGraf).place(x = 100, y = 220)
+
+######################Pestaña 2 (SUMA)######################
+             
+Label(pestañaSuma, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaSuma, textvariable = num1).place(x = 200, y = 50)
+
+Label(pestañaSuma, text = "Introduce otro número:").place(x = 20, y = 80)
+Entry(pestañaSuma, textvariable = num2).place(x = 200, y = 80)
+
+Button(pestañaSuma, text = "Obtener un resultado", fg = "#228B22", command = funSuma).place(x = 100, y = 150)
+
+######################Pestaña 3 (RESTA)######################
+
+Label(pestañaResta, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaResta, textvariable = num1).place(x = 200, y = 50)
+
+Label(pestañaResta, text = "Introduce otro número:").place(x = 20, y = 80)
+Entry(pestañaResta, textvariable = num2).place(x = 200, y = 80)
+
+Button(pestañaResta, text = "Obtener un resultado", fg = "#228B22", command = funResta).place(x = 100, y = 150)
+
+######################Pestaña 4 (MULTIPLICACION)######################
+
+Label(pestañaMultiplicacion, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaMultiplicacion, textvariable = num1).place(x = 200, y = 50)
+
+Label(pestañaMultiplicacion, text = "Introduce otro número:").place(x = 20, y = 80)
+Entry(pestañaMultiplicacion, textvariable = num2).place(x = 200, y = 80)
+
+Button(pestañaMultiplicacion, text = "Obtener un resultado", fg = "#228B22", command = funMultiplicacion).place(x = 100, y = 150)
+
+######################Pestaña 5 (DIVISION)######################
+
+Label(pestañaDivision, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaDivision, textvariable = num1).place(x = 200, y = 50)
+
+Label(pestañaDivision, text = "Introduce otro número:").place(x = 20, y = 80)
+Entry(pestañaDivision, textvariable = num2).place(x = 200, y = 80)
+
+Button(pestañaDivision, text = "Obtener un resultado", fg = "#228B22", command = funDivision).place(x = 100, y = 150)
+
+######################Pestaña 5 (RAIZ)######################
+
+Label(pestañaRaiz, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaRaiz, textvariable = num1).place(x = 200, y = 50)
+
+Label(pestañaRaiz, text = "Introduce otro número:").place(x = 20, y = 80)
+Entry(pestañaRaiz, textvariable = num2).place(x = 200, y = 80)
+
+Button(pestañaRaiz, text = "Obtener un resultado", fg = "#228B22", command = funRaiz).place(x = 100, y = 150)
+
+######################Pestaña 7 (POTENCIA)######################
+
+Label(pestañaPotencia, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaPotencia, textvariable = num1).place(x = 200, y = 50)
+
+Label(pestañaPotencia, text = "Introduce otro número:").place(x = 20, y = 80)
+Entry(pestañaPotencia, textvariable = num2).place(x = 200, y = 80)
+
+Button(pestañaPotencia, text = "Obtener un resultado", fg = "#228B22", command = funPotencia).place(x = 100, y = 150)
+
+######################Pestaña 8 (SENO)######################
+
+Label(pestañaSeno, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaSeno, textvariable = num1).place(x = 200, y = 50)
+
+Button(pestañaSeno, text = "Obtener un resultado", fg = "#228B22", command = funSeno).place(x = 100, y = 150)
+
+######################Pestaña 9 (COSENO)######################
+
+Label(pestañaCoseno, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaCoseno, textvariable = num1).place(x = 200, y = 50)
+
+Button(pestañaCoseno, text = "Obtener un resultado", fg = "#228B22", command = funCos).place(x = 100, y = 150)
+
+######################Pestaña 10 (TANGENTE)######################
+
+Label(pestañaTangente, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaTangente, textvariable = num1).place(x = 200, y = 50)
+
+Button(pestañaTangente, text = "Obtener un resultado", fg = "#228B22", command = funTan).place(x = 100, y = 150)
+
+######################Pestaña 11 (LOGARITMO)######################
+
+Label(pestañaLogaritmo, text = "Introduce un número:").place(x = 20, y = 50)
+Entry(pestañaLogaritmo, textvariable = num1).place(x = 200, y = 50)
+
+Button(pestañaLogaritmo, text = "Obtener un resultado", fg = "#228B22", command = funLog).place(x = 100, y = 150)
+
+#################################################################
+
+x = Symbol('x')
+print(integrate(sin(x)+x**2+1, x))
+
+# Desplagando la ventana y ejecutando el loop principal
+app.mainloop()
