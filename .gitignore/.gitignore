@@ -41,6 +41,7 @@ def funCerrar():
 	if messagebox.askokcancel("Salir", "¿Desea salir de la aplicación?"):
 		print("Has cerrado la ventana")
 		app.destroy()
+y = None
 
 def funInt():
     numero1 = num1.get()
@@ -48,8 +49,11 @@ def funInt():
     numero3 = num3.get()
     numero4 = num4.get()
     x = Symbol('x')
-    resultado = integrate(numero3*x**numero1 + numero4*x**numero2, x)
+    y = int(numero3)*x**int(numero1)+int(numero4)*x**int(numero2)
+    resultado = integrate(y, x)
+    y = str(resultado)
     Label(pestañaIntegrar, text = "Total: %s" %(resultado)).place(x = 80,y = 200) # Definiendo funciones
+    return y
 
 def funSuma():
     numero1 = num1.get()
@@ -118,13 +122,42 @@ def funLog():
     resultado = math.log(numero1)
     Label(pestañaLogaritmo, text = "Total: %s" %(resultado)).place(x = 80, y = 200)
 
+
+def decode():
+    f = funInt()
+    lista = list(f)
+    for e in f:
+        if e == "x" or e =="*" or e=="/" or e=="+" or e==" ":
+            lista.remove(e)
+        else:
+            pass
+    exponentes = []
+    coeficientes = []
+    denominadores = []
+    z  = 0
+    for e in lista:
+        if z%3==0:
+            coeficientes.append(int(e))
+        else:
+            if z%2!=0 and z%3!=0:
+                exponentes.append(int(e))
+            else:
+                denominadores.append(int(e))
+        z =z +1
+    cp = []
+    cp.append(coeficientes)
+    cp.append(exponentes)
+    cp.append(denominadores)
+    return cp
+
 def funGraf():
-    X = np.linspace(-np.pi, np.pi, 256, endpoint=True)
-    C, S = np.cos(X), np.sin(X)
-    pl.plot(X, C)
-    pl.plot(X, S)
+    x = np.arange(-100,100)
+    y = 0
+    coeficiente_potencias = decode()
+    for i in range(len(coeficiente_potencias[0])):
+        y = y + (coeficiente_potencias[0][i]*x**coeficiente_potencias[1][i])/coeficiente_potencias[2][i]
+    pl.plot(x, y)
     pl.show()
-    Label(pestañaIntegrar, )
 
 num1 = DoubleVar() # Declarando variables
 num2 = DoubleVar()
@@ -267,9 +300,6 @@ Entry(pestañaLogaritmo, textvariable = num1).place(x = 200, y = 50)
 Button(pestañaLogaritmo, text = "Obtener un resultado", fg = "#228B22", command = funLog).place(x = 100, y = 150)
 
 #################################################################
-
-x = Symbol('x')
-print(integrate(sin(x)+x**2+1, x))
 
 # Desplagando la ventana y ejecutando el loop principal
 app.mainloop()
